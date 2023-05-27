@@ -42,11 +42,26 @@ const App = () => {
       });
   };
 
+  const estadoObjeto = { estado };
+
   return (
     <div>
-      <h1>Estado actual: {estado}</h1>
-      <button onClick={() => cambiarEstado('encendido')}>Encender</button>
-      <button onClick={() => cambiarEstado('apagado')}>Apagar</button>
+      <div className="card">
+        <img
+          src={estadoObjeto.estado === 'encendido' ? './images/bombilla_amarilla.png' : './images/bombilla_sin_color.png'}
+          className="card-img-top"
+          alt="Bombilla"
+        />
+        <div className="card-body">
+          <h5 className="card-title">Estado actual: {estadoObjeto.estado}</h5>
+          <button onClick={() => cambiarEstado('encendido')} className="btn btn-primary">
+            Encender
+          </button>
+          <button onClick={() => cambiarEstado('apagado')} className="btn btn-danger">
+            Apagar
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
