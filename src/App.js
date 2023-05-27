@@ -1,72 +1,52 @@
 import React, { useState, useEffect } from 'react';
 
-const API_URL = 'http://psp.grupito8.com/api/index.php?action=estado';
-
-const Card = ({ id, estado, onToggle }) => {
-  const bulbColor = estado === 'encendido' ? 'yellow' : 'transparent';
-
-  const handleToggle = () => {
-    onToggle(id, estado);
-  };
-
-  return (
-    <div className="card">
-      <div className="card-body">
-        <div className="bulb" style={{ backgroundColor: bulbColor }}></div>
-        <h5 className="card-title">ID: {id}</h5>
-        <button onClick={handleToggle} className="btn btn-primary">
-          {estado === 'encendido' ? 'Apagar' : 'Encender'}
-        </button>
-      </div>
-    </div>
-  );
-};
-
 const App = () => {
-  const [cards, setCards] = useState([]);
+  const [estado, setEstado] = useState('');
 
+  // Obtener el estado actual al cargar la página
   useEffect(() => {
-    fetchData();
+    obtenerEstado();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(API_URL);
-      console.log(response);
-      const data = await response.json();
-      setCards(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+  // Función para obtener el estado actual de la API
+  const obtenerEstado = () => {
+    fetch('http://psp.grupito8.com/api/index.php?action=estado')
+      .then(response => response.text())
+      .then(data => {
+        setEstado(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
   };
 
-  const handleToggle = async (id, estado) => {
-    const newEstado = estado === 'encendido' ? 'apagado' : 'encendido';
-
-    try {
-      const response = await fetch(`${API_URL}&id=${id}&estado=${newEstado}`, { method: 'POST' });
-      if (response.ok) {
-        // Actualizar el estado localmente
-        setCards(prevCards =>
-          prevCards.map(card => (card.id === id ? { ...card, estado: newEstado } : card))
-        );
-      } else {
-        console.error('Error al cambiar el estado');
-      }
-    } catch (error) {
-      console.error('Error al cambiar el estado:', error);
-    }
+  // Función para cambiar el estado en la API
+  const cambiarEstado = nuevoEstado => {
+    fetch('http://psp.grupito8.com/api/index.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        action: 'cambiar',
+        estado: nuevoEstado
+      })
+    })
+      .then(response => response.text())
+      .then(data => {
+        console.log(data);
+        obtenerEstado(); // Actualiza el estado después de cambiarlo
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        {cards.map(card => (
-          <div key={card.id} className="col-md-4">
-            <Card id={card.id} estado={card.estado} onToggle={handleToggle} />
-          </div>
-        ))}
-      </div>
+    <div>
+      <h1>Estado actual: {estado}</h1>
+      <button onClick={() => cambiarEstado('encendido')}>Encender</button>
+      <button onClick={() => cambiarEstado('apagado')}>Apagar</button>
     </div>
   );
 };
