@@ -1,16 +1,25 @@
-import React, { useEffect } from 'react';
-import bombiImage from './images/bombi.png';
-import bombillaSinColorImage from './images/bombilla_sin_color.png';
+import React from 'react';
+import automatico from './images/automatico.png';
+import pasillo from './images/pasillo.png';
+import vacio from './images/vacio.png';
+// Importa otras imágenes necesarias aquí
 
-const Card = ({ nombre, obtenerEstado, estado, cambiarEstado }) => {
-  useEffect(() => {
-    obtenerEstado(nombre); // Llamada inicial a obtenerEstado
+const Card = ({ nombre, estado, cambiarEstado }) => {
+  let imagen;
 
-    // Limpieza del efecto
-    return () => {
-      // Realizar alguna limpieza si es necesario
-    };
-  }, [nombre, obtenerEstado, estado]); // Agregar 'nombre', 'obtenerEstado' y 'estado' como dependencias
+  switch (nombre) {
+    case 'automatico':
+      imagen = automatico;
+      break;
+    case 'pasillo':
+      imagen = pasillo;
+      break;
+    // Agrega más casos para cada nombre y su correspondiente imagen
+    default:
+      // Imagen por defecto si no se encuentra un caso coincidente
+      imagen = vacio;
+      break;
+  }
 
   const handleCambiarEstado = (nuevoEstado) => {
     cambiarEstado(nuevoEstado, nombre);
@@ -20,7 +29,7 @@ const Card = ({ nombre, obtenerEstado, estado, cambiarEstado }) => {
     <div>
       <div className="card">
         <img
-          src={estado === 'encendido' ? bombiImage : bombillaSinColorImage}
+          src={imagen}
           className="card-img-top"
           alt="Bombilla"
           crossOrigin="anonymous"

@@ -56,7 +56,8 @@ const App = () => {
       .then(response => response.text())
       .then(data => {
         console.log(data);
-        // Actualizar el estado en la interfaz si es necesario
+        // Actualizar el estado en la interfaz después de recibir la respuesta
+        obtenerEstado(nombre); // Obtener el estado actualizado desde la API
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -71,7 +72,6 @@ const App = () => {
           key={card.nombre}
           nombre={card.nombre}
           estado={card.estado}
-          obtenerEstado={obtenerEstado}
           cambiarEstado={cambiarEstado}
         />
       ))}
