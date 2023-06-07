@@ -1,0 +1,15 @@
+.header {
+  background-color: #81a9c5;
+  padding: 20px;
+}
+
+.logo {
+  height: 24px;
+  /* Ajusta la altura según el tamaño de tu imagen */
+  margin-right: 10px;
+  /* Ajusta el margen derecho según tus preferencias */
+}
+
+h1 {
+  margin: 0;
+}

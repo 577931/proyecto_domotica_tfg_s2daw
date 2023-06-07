@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Card from './Card';
-import Header from './Header';
+import Header from './header/Header';
 
 const App = () => {
   const [estado, setEstado] = useState('');
