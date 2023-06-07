@@ -4,18 +4,32 @@ import Header from './header/Header';
 
 const App = () => {
   const [estado, setEstado] = useState('');
+  const [nombre, setNombre] = useState('');
 
-  // Obtener el estado actual al cargar la página
+  // Obtener el estado actual y el nombre al cargar la página
   useEffect(() => {
     obtenerEstado();
+    obtenerNombre();
   }, []);
 
   // Función para obtener el estado actual de la API
   const obtenerEstado = () => {
     fetch('http://psp.grupito8.com/api/index.php?action=estado')
+      .then(response => response.json())
+      .then(data => {
+        setEstado(data.estado);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  };
+
+  // Función para obtener el nombre de la API
+  const obtenerNombre = () => {
+    fetch('http://psp.grupito8.com/api/index.php?name=nombre')
       .then(response => response.text())
       .then(data => {
-        setEstado(data);
+        setNombre(data);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -47,7 +61,7 @@ const App = () => {
   return (
     <div>
       <Header />
-      <Card estado={estado} cambiarEstado={cambiarEstado} />
+      <Card nombre={nombre} estado={estado} cambiarEstado={cambiarEstado} />
     </div>
   );
 };
