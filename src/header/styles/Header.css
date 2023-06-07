@@ -1,13 +1,13 @@
 .header {
   background-color: #81a9c5;
   padding: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .logo {
-  height: 24px;
-  /* Ajusta la altura según el tamaño de tu imagen */
-  margin-right: 10px;
-  /* Ajusta el margen derecho según tus preferencias */
+  height: 50px;
+  margin-right: 20px;
 }
 
 h1 {
