@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Card from './Card';
+import Header from './Header';
 
 const App = () => {
   const [estado, setEstado] = useState('');
@@ -45,6 +46,7 @@ const App = () => {
 
   return (
     <div>
+      <Header />
       <Card estado={estado} cambiarEstado={cambiarEstado} />
     </div>
   );
