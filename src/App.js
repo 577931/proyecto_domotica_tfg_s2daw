@@ -1,57 +1,62 @@
 import React, { useState, useEffect } from 'react';
-import Card from './Card';
 import Header from './header/Header';
+import Card from './Card';
 
 const App = () => {
-  const [estado, setEstado] = useState('');
-  const [nombre, setNombre] = useState('');
+  const [cards, setCards] = useState([]);
 
-  // Obtener el estado actual y el nombre al cargar la página
-  useEffect(() => {
-    obtenerEstado();
-    obtenerNombre();
-  }, []);
-
-  // Función para obtener el estado actual de la API
-  const obtenerEstado = () => {
-    fetch('http://psp.grupito8.com/api/index.php?action=estado')
+  const obtenerNombres = () => {
+    fetch('http://psp.grupito8.com/api/index.php?action=estados')
       .then(response => response.json())
       .then(data => {
-        setEstado(data.estado);
+        setCards(data);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
   };
 
-  // Función para obtener el nombre de la API
-  const obtenerNombre = () => {
-    fetch('http://psp.grupito8.com/api/index.php?name=nombre')
-      .then(response => response.text())
+  useEffect(() => {
+    obtenerNombres(); // Llamada inicial a obtenerNombres
+
+    // Limpieza del efecto
+    return () => {
+      // Realizar alguna limpieza si es necesario
+    };
+  }, []);
+
+  const obtenerEstado = (nombre) => {
+    fetch(`http://psp.grupito8.com/api/index.php?action=estado&name=${nombre}`)
+      .then(response => response.json())
       .then(data => {
-        setNombre(data);
+        const updatedCards = cards.map(card => {
+          if (card.nombre === nombre) {
+            return {
+              ...card,
+              estado: data.estado
+            };
+          }
+          return card;
+        });
+        setCards(updatedCards);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
   };
 
-  // Función para cambiar el estado en la API
-  const cambiarEstado = nuevoEstado => {
+  const cambiarEstado = (nuevoEstado, nombre) => {
     fetch('http://psp.grupito8.com/api/index.php', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: new URLSearchParams({
-        action: 'cambiar',
-        estado: nuevoEstado
-      })
+      body: `action=cambiar&name=${nombre}&estado=${nuevoEstado}`,
     })
       .then(response => response.text())
       .then(data => {
         console.log(data);
-        obtenerEstado(); // Actualiza el estado después de cambiarlo
+        // Actualizar el estado en la interfaz si es necesario
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -61,7 +66,15 @@ const App = () => {
   return (
     <div>
       <Header />
-      <Card nombre={nombre} estado={estado} cambiarEstado={cambiarEstado} />
+      {cards.map(card => (
+        <Card
+          key={card.nombre}
+          nombre={card.nombre}
+          estado={card.estado}
+          obtenerEstado={obtenerEstado}
+          cambiarEstado={cambiarEstado}
+        />
+      ))}
     </div>
   );
 };
