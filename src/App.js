@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from './header/Header';
-import Card from './Card';
+import Card from './cards/Card';
 
 const App = () => {
   const [cards, setCards] = useState([]);
@@ -67,14 +67,16 @@ const App = () => {
   return (
     <div>
       <Header />
-      {cards.map(card => (
-        <Card
-          key={card.nombre}
-          nombre={card.nombre}
-          estado={card.estado}
-          cambiarEstado={cambiarEstado}
-        />
-      ))}
+      <div className="card-container">
+        {cards.map(card => (
+          <Card
+            key={card.nombre}
+            nombre={card.nombre}
+            estado={card.estado}
+            cambiarEstado={cambiarEstado}
+          />
+        ))}
+      </div>
     </div>
   );
 };
