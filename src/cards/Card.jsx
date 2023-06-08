@@ -74,13 +74,15 @@ const Card = ({ nombre, estado, cambiarEstado }) => {
         </div>
         <div className="card-body">
           <h4 className="card-title">{nombre}</h4>
-          <h5 className="card-subtitle">Estado actual: {estado}</h5>
-          <button onClick={() => handleCambiarEstado('encendido')} className="btn btn-success">
-            Encender
-          </button>
-          <button onClick={() => handleCambiarEstado('apagado')} className="btn btn-danger">
-            Apagar
-          </button>
+          <h5 className="card-subtitle">Estado: {estado}</h5>
+          <div className="btn-container"> {/* Contenedor para los botones */}
+            <button onClick={() => handleCambiarEstado('encendido')} className="btn btn-success">
+              Encender
+            </button>
+            <button onClick={() => handleCambiarEstado('apagado')} className="btn btn-danger">
+              Apagar
+            </button>
+          </div>
         </div>
       </div>
     </div>
