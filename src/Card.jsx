@@ -35,8 +35,8 @@ const Card = ({ nombre, estado, cambiarEstado }) => {
           crossOrigin="anonymous"
         />
         <div className="card-body">
-          <h5 className="card-title">Estado actual: {estado}</h5>
-          <h6 className="card-subtitle">Nombre: {nombre}</h6>
+          <h4 className="card-title">{nombre}</h4>
+          <h5 className="card-subtitle">Estado actual: {estado}</h5>
           <button onClick={() => handleCambiarEstado('encendido')} className="btn btn-success">
             Encender
           </button>
