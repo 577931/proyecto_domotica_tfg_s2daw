@@ -3,6 +3,17 @@
   padding: 20px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+.centrado {
+  display: flex;
+  align-items: center;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
 }
 
 .logo {
@@ -11,5 +22,20 @@
 }
 
 h1 {
+  margin: 0;
+}
+
+.beta {
+  display: flex;
+  align-items: center;
+}
+
+.beta-text {
+  color: white;
+  margin: 0;
+}
+
+.menu-text {
+  color: white;
   margin: 0;
 }
