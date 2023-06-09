@@ -14,6 +14,7 @@
 .menu {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .logo {
@@ -23,6 +24,7 @@
 
 h1 {
   margin: 0;
+  color: white;
 }
 
 .beta {
@@ -38,4 +40,66 @@ h1 {
 .menu-text {
   color: white;
   margin: 0;
+}
+
+/* Estilos para el menú lateral */
+.menu-container {
+  background-color: #81a9c5;
+  width: 33.33%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  opacity: 0.9;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.menu-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-image {
+  width: 50px;
+  height: 50px;
+}
+
+.menu-title {
+  color: white;
+  margin-top: 10px;
+}
+
+.menu-number {
+  color: white;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
+
+.menu-button {
+  background-color: white;
+  border: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.menu-exit-button {
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 10px;
+  margin-top: auto;
+  align-self: center;
+  cursor: pointer;
 }
