@@ -11,10 +11,12 @@ const Menu = ({ isMenuOpen }) => {
     <div className="menu-container">
       <div className="menu-header">
         <img src={bombiImage} alt="Bombi" className="menu-image" />
-        <h1 className="menu-title">Nº de instalación</h1>
-        <p className="menu-number">1234567890</p>
+        <h1 className="menu-title">Domotiza2</h1>
+        <h3 className="menu-text">Instalación</h3>
+        <p className="menu-number">0000000001</p>
       </div>
       <div className="menu-buttons">
+        <button className="menu-button">Inicio</button>
         <button className="menu-button">Mis dispositivos</button>
         <button className="menu-button">Configuración</button>
         <button className="menu-button">Acerca de</button>

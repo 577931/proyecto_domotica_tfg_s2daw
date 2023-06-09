@@ -51,7 +51,6 @@ h1 {
   top: 0;
   left: 0;
   z-index: 999;
-  opacity: 0.9;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -92,14 +91,24 @@ h1 {
   padding: 10px;
   margin-bottom: 10px;
   cursor: pointer;
+  border-radius: 20px;
+  /* Estilo redondeado */
+  background-image: linear-gradient(to bottom right, #f5f5f5, #ebebeb);
+  /* Degradado suave */
+  color: black;
+  /* Letras negras */
+  font-size: 20px;
 }
 
 .menu-exit-button {
   background-color: red;
   border: none;
   color: white;
-  padding: 10px;
+  padding: 15px;
   margin-top: auto;
+  margin-bottom: 20%;
   align-self: center;
   cursor: pointer;
+  border-radius: 20px;
+  font-size: 20px;
 }
