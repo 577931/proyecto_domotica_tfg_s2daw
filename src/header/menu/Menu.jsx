@@ -25,16 +25,17 @@ const Menu = ({ isMenuOpen, menuRef, toggleMenu = () => { } }) => {
         <p className="menu-number">0000000001</p>
       </div>
       <div className="menu-buttons">
-        <Link to="/" className="menu-button" onClick={handleCollapseMenu}>
+        <Link to="/" className="menu-button menu-link" onClick={handleCollapseMenu}>
           Inicio
         </Link>
         <Link
           to="/dispositivos"
-          className="menu-button"
+          className="menu-button menu-link"
           onClick={handleShowDispositivos}
         >
           Mis dispositivos
         </Link>
+
         <button className="menu-button">Configuración</button>
         <button className="menu-button">Acerca de</button>
       </div>
