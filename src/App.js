@@ -146,15 +146,10 @@ const App = () => {
             ))}
           </div>} />
           <Route path="/dispositivos" element={<div className="card-container">
-            {cards.map(card => (
-              <Dispositivos
-                key={card.nombre}
-                nombre={card.nombre}
-                estado={card.estado}
-                modificar={modificar}
-                eliminar={eliminar}
-              />
-            ))}
+            <Dispositivos 
+            dispositivos={cards} 
+            modificar={modificar} 
+            eliminar={eliminar} />
           </div>} />
         </Routes>
       </div>

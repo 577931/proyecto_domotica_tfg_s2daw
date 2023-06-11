@@ -4,6 +4,19 @@
   justify-content: center;
 }
 
+.dispositivos-containeres {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cards-containeres {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+}
+
 .card {
   margin: 10px;
   background-color: #fff;
@@ -76,4 +89,9 @@
 .btn-warning {
   background-color: rgb(255, 145, 0);
   color: white;
+}
+
+.titulo-container {
+  display: flex;
+  justify-content: center;
 }

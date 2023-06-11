@@ -12,7 +12,7 @@ const Header = ({ toggleMenu }) => {
   };
 
   return (
-    <header className="header">
+    <header className={`header ${isMenuOpen ? '' : 'collapsed'}`}>
       <button className={`menu-button ${isMenuOpen ? 'open' : ''}`} onClick={handleToggleMenu}>
         =
       </button>
