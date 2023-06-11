@@ -16,7 +16,11 @@ import vacio from './images/vacio.png';
 const TituloDispositivos = () => {
   return (
     <div className="dispositivos-header">
-      <h2>Tus dispositivos:</h2>
+      <div className="add-device-container">
+        {/* AGREGAR LÓGICA DE AGREGAR DISPOSITIVO PARA QUE FUNCIONE */}
+        <button className="btn btn-success">Agregar dispositivo</button>
+        <input type="text" placeholder="Nuevo dispositivo" className="device-input" />
+      </div>
     </div>
   );
 };

@@ -144,9 +144,3 @@ h1 {
   text-decoration: none;
   font-family: inherit;
 }
-
-.dispositivos-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
