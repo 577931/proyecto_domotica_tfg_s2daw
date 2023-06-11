@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './header/Header';
 import Card from './cards/Card';
 import Menu from './header/menu/Menu';
@@ -105,9 +105,9 @@ const App = () => {
   }, [cards, obtenerEstado]);
 
   useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -125,14 +125,15 @@ const App = () => {
     <Router>
       <div>
         <Header toggleMenu={toggleMenu} />
-        <div className="btn-container">
-          <Link to="/" className="btn btn-primary">
-            Inicio
-          </Link>
-          <Link to="/dispositivos" className="btn btn-primary">
-            Mis Dispositivos
-          </Link>
-        </div>
+        {isMenuOpen && (
+          <div ref={menuRef}>
+            <Menu
+              isMenuOpen={isMenuOpen}
+              menuRef={menuRef}
+              toggleMenu={toggleMenu}
+            />
+          </div>
+        )}
         <Routes>
           <Route path="/" element={<div className="card-container">
             {cards.map(card => (
@@ -156,11 +157,6 @@ const App = () => {
             ))}
           </div>} />
         </Routes>
-        {isMenuOpen && (
-          <div ref={menuRef}>
-            <Menu />
-          </div>
-        )}
       </div>
     </Router>
   );

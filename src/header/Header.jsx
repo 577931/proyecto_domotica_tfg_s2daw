@@ -3,23 +3,19 @@ import './styles/Header.css';
 import Logo from './Logo';
 import Menu from './menu/Menu';
 
-const Header = ({ onShowDispositivos }) => {
+const Header = ({ toggleMenu }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleToggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleShowDispositivos = () => {
-    setIsMenuOpen(false);
-    onShowDispositivos();
+    toggleMenu();
   };
 
   return (
     <header className="header">
-      <div className="menu" onClick={handleToggleMenu}>
-        <h1 className="menu-text">=</h1>
-      </div>
+      <button className={`menu-button ${isMenuOpen ? 'open' : ''}`} onClick={handleToggleMenu}>
+        =
+      </button>
       <div className='centrado'>
         <Logo />
         <h1>Domotiza2</h1>
@@ -27,7 +23,7 @@ const Header = ({ onShowDispositivos }) => {
       <div className='beta'>
         <h1 className="beta-text">B E T A</h1>
       </div>
-      <Menu isMenuOpen={isMenuOpen} onShowDispositivos={handleShowDispositivos} />
+      <Menu isMenuOpen={isMenuOpen} toggleMenu={handleToggleMenu} />
     </header>
   );
 };
