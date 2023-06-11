@@ -1,10 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Header from './header/Header';
 import Card from './cards/Card';
-import './App.css';
+import Menu from './header/menu/Menu';
+import Dispositivos from './cards/Dispositivos';
 
-const App_new = () => {
+const App = () => {
   const [cards, setCards] = useState([]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
   const obtenerNombres = () => {
     fetch('http://psp.grupito8.com/api/index.php?action=estados')
@@ -52,13 +56,13 @@ const App_new = () => {
       });
   };
 
-  const modificar = (nuevoNombre, nombre) => {
+  const modificar = (nuevoNombre, nombreAnterior) => {
     fetch('http://psp.grupito8.com/api/index.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: `action=modificar&nuevoNombre=${nuevoNombre}&nombre=${nombre}`,
+      body: `action=modificar&nuevoNombre=${nuevoNombre}&nombreAnterior=${nombreAnterior}`,
     })
       .then(response => response.text())
       .then(data => {
@@ -69,6 +73,7 @@ const App_new = () => {
         console.error('Error fetching data:', error);
       });
   };
+
 
   const eliminar = (nombre) => {
     fetch('http://psp.grupito8.com/api/index.php', {
@@ -99,23 +104,66 @@ const App_new = () => {
       });
   }, [cards, obtenerEstado]);
 
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
+  const handleClickOutside = (event) => {
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setIsMenuOpen(false);
+    }
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <div>
-      <Header />
-      <div className="card-container">
-        {cards.map(card => (
-          <Card
-            key={card.nombre}
-            nombre={card.nombre}
-            estado={card.estado}
-            cambiarEstado={cambiarEstado}
-            modificar={modificar}
-            eliminar={eliminar}
-          />
-        ))}
+    <Router>
+      <div>
+        <Header toggleMenu={toggleMenu} />
+        <div className="btn-container">
+          <Link to="/" className="btn btn-primary">
+            Inicio
+          </Link>
+          <Link to="/dispositivos" className="btn btn-primary">
+            Mis Dispositivos
+          </Link>
+        </div>
+        <Routes>
+          <Route path="/" element={<div className="card-container">
+            {cards.map(card => (
+              <Card
+                key={card.nombre}
+                nombre={card.nombre}
+                estado={card.estado}
+                cambiarEstado={cambiarEstado}
+              />
+            ))}
+          </div>} />
+          <Route path="/dispositivos" element={<div className="card-container">
+            {cards.map(card => (
+              <Dispositivos
+                key={card.nombre}
+                nombre={card.nombre}
+                estado={card.estado}
+                modificar={modificar}
+                eliminar={eliminar}
+              />
+            ))}
+          </div>} />
+        </Routes>
+        {isMenuOpen && (
+          <div ref={menuRef}>
+            <Menu />
+          </div>
+        )}
       </div>
-    </div>
+    </Router>
   );
 };
 
-export default App_new;
+export default App;
