@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import './styles/card.css';
 import automatico from './images/automatico.png';
 import pasillo from './images/pasillo.png';
@@ -12,11 +12,9 @@ import horno from './images/horno.png';
 import microondas from './images/microondas.png';
 import lavadora from './images/lavadora.png';
 import vacio from './images/vacio.png';
+// Importa otras imágenes necesarias aquí
 
-const Dispositivos = ({ nombre, estado, modificar, eliminar }) => {
-  const [editMode, setEditMode] = useState(false);
-  const [newName, setNewName] = useState(nombre);
-
+const Card = ({ nombre, estado, cambiarEstado }) => {
   let imagen;
 
   switch (nombre) {
@@ -59,35 +57,9 @@ const Dispositivos = ({ nombre, estado, modificar, eliminar }) => {
       break;
   }
 
-  const handleModificar = useCallback(() => {
-    if (editMode) {
-      modificar(newName, nombre);
-    }
-    setEditMode(!editMode);
-  }, [editMode, modificar, newName, nombre]);
-
-  const handleEliminar = () => {
-    eliminar(nombre);
+  const handleCambiarEstado = (nuevoEstado) => {
+    cambiarEstado(nuevoEstado, nombre);
   };
-
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === 'Enter' && editMode) {
-        handleModificar();
-      }
-    };
-
-    if (editMode) {
-      document.addEventListener('keydown', handleKeyDown);
-    } else {
-      document.removeEventListener('keydown', handleKeyDown);
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [editMode, handleModificar]);
-
 
   return (
     <div>
@@ -101,22 +73,14 @@ const Dispositivos = ({ nombre, estado, modificar, eliminar }) => {
           />
         </div>
         <div className="card-body">
-          {editMode ? (
-            <input
-              type="text"
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-            />
-          ) : (
-            <h4 className="card-title">{nombre}</h4>
-          )}
+          <h4 className="card-title">{nombre}</h4>
           <h5 className="card-subtitle">Estado: {estado}</h5>
-          <div className="btn-container">
-            <button onClick={handleModificar} className="btn btn-warning">
-              {editMode ? 'Guardar' : 'Modificar'}
+          <div className="btn-container"> {/* Contenedor para los botones */}
+            <button onClick={() => handleCambiarEstado('encendido')} className="btn btn-light">
+              Encender
             </button>
-            <button onClick={handleEliminar} className="btn btn-danger">
-              Eliminar
+            <button onClick={() => handleCambiarEstado('apagado')} className="btn btn-dark">
+              Apagar
             </button>
           </div>
         </div>
@@ -125,4 +89,4 @@ const Dispositivos = ({ nombre, estado, modificar, eliminar }) => {
   );
 };
 
-export default Dispositivos;
+export default Card;

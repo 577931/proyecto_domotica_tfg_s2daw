@@ -1,14 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
 import Header from './header/Header';
 import Card from './cards/Card';
-import Menu from './header/menu/Menu';
-import Dispositivos from './Dispositivos';
+import './App.css';
 
-const App = () => {
+const App_new = () => {
   const [cards, setCards] = useState([]);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef(null);
 
   const obtenerNombres = () => {
     fetch('http://psp.grupito8.com/api/index.php?action=estados')
@@ -103,62 +99,23 @@ const App = () => {
       });
   }, [cards, obtenerEstado]);
 
-  useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
-
-  const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setIsMenuOpen(false);
-    }
-  };
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
-    <Router>
-      <div>
-        <Header toggleMenu={toggleMenu} />
-        <div className="btn-container">
-          <Link to="/" className="btn btn-primary">
-            Inicio
-          </Link>
-          <Link to="/dispositivos" className="btn btn-primary">
-            Mis Dispositivos
-          </Link>
-        </div>
-        <Switch>
-          <Route exact path="/">
-            <div className="card-container">
-              {cards.map(card => (
-                <Card
-                  key={card.nombre}
-                  nombre={card.nombre}
-                  estado={card.estado}
-                  cambiarEstado={cambiarEstado}
-                  modificar={modificar}
-                  eliminar={eliminar}
-                />
-              ))}
-            </div>
-          </Route>
-          <Route path="/dispositivos">
-            <Dispositivos cards={cards} />
-          </Route>
-        </Switch>
-        {isMenuOpen && (
-          <div ref={menuRef}>
-            <Menu />
-          </div>
-        )}
+    <div>
+      <Header />
+      <div className="card-container">
+        {cards.map(card => (
+          <Card
+            key={card.nombre}
+            nombre={card.nombre}
+            estado={card.estado}
+            cambiarEstado={cambiarEstado}
+            modificar={modificar}
+            eliminar={eliminar}
+          />
+        ))}
       </div>
-    </Router>
+    </div>
   );
 };
 
-export default App;
+export default App_new;
