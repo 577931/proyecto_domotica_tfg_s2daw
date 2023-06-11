@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Header from './header/Header';
 import Card from './cards/Card';
 import Menu from './header/menu/Menu';
+import Dispositivos from './Dispositivos';
 
 const App = () => {
   const [cards, setCards] = useState([]);
@@ -20,9 +22,8 @@ const App = () => {
   };
 
   useEffect(() => {
-    obtenerNombres(); // Llamada inicial a obtenerNombres
+    obtenerNombres();
 
-    // Limpieza del efecto
     return () => {
       // Realizar alguna limpieza si es necesario
     };
@@ -48,8 +49,43 @@ const App = () => {
       .then(response => response.text())
       .then(data => {
         console.log(data);
-        // Actualizar el estado en la interfaz después de recibir la respuesta
-        obtenerEstado(nombre); // Obtener el estado actualizado desde la API
+        obtenerNombres();
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  };
+
+  const modificar = (nuevoNombre, nombre) => {
+    fetch('http://psp.grupito8.com/api/index.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `action=modificar&nuevoNombre=${nuevoNombre}&nombre=${nombre}`,
+    })
+      .then(response => response.text())
+      .then(data => {
+        console.log(data);
+        obtenerNombres();
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  };
+
+  const eliminar = (nombre) => {
+    fetch('http://psp.grupito8.com/api/index.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `action=eliminar&nombre=${nombre}`,
+    })
+      .then(response => response.text())
+      .then(data => {
+        console.log(data);
+        obtenerNombres();
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -76,7 +112,7 @@ const App = () => {
 
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setIsMenuOpen(false); // Cambiado a `false` en lugar de `true`
+      setIsMenuOpen(false);
     }
   };
 
@@ -85,24 +121,43 @@ const App = () => {
   };
 
   return (
-    <div>
-      <Header toggleMenu={toggleMenu} />
-      <div className="card-container">
-        {cards.map(card => (
-          <Card
-            key={card.nombre}
-            nombre={card.nombre}
-            estado={card.estado}
-            cambiarEstado={cambiarEstado}
-          />
-        ))}
-      </div>
-      {isMenuOpen && (
-        <div ref={menuRef}>
-          <Menu />
+    <Router>
+      <div>
+        <Header toggleMenu={toggleMenu} />
+        <div className="btn-container">
+          <Link to="/" className="btn btn-primary">
+            Inicio
+          </Link>
+          <Link to="/dispositivos" className="btn btn-primary">
+            Mis Dispositivos
+          </Link>
         </div>
-      )}
-    </div>
+        <Switch>
+          <Route exact path="/">
+            <div className="card-container">
+              {cards.map(card => (
+                <Card
+                  key={card.nombre}
+                  nombre={card.nombre}
+                  estado={card.estado}
+                  cambiarEstado={cambiarEstado}
+                  modificar={modificar}
+                  eliminar={eliminar}
+                />
+              ))}
+            </div>
+          </Route>
+          <Route path="/dispositivos">
+            <Dispositivos cards={cards} />
+          </Route>
+        </Switch>
+        {isMenuOpen && (
+          <div ref={menuRef}>
+            <Menu />
+          </div>
+        )}
+      </div>
+    </Router>
   );
 };
 
