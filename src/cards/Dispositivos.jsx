@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './styles/card.css';
 import automatico from './images/automatico.png';
 import pasillo from './images/pasillo.png';
@@ -11,23 +11,53 @@ import aire_acondicionado from './images/aire_acondicionado.png';
 import horno from './images/horno.png';
 import microondas from './images/microondas.png';
 import lavadora from './images/lavadora.png';
+import tesla from './images/tesla.png';
 import vacio from './images/vacio.png';
 
-const TituloDispositivos = () => {
+const TituloDispositivos = ({ agregarDispositivo }) => {
+
+  const [nuevoDispositivo, setNuevoDispositivo] = useState('');
+
+  const handleAgregar = (event) => {
+    event.preventDefault();
+    if (nuevoDispositivo.trim() !== '') {
+      agregarDispositivo(nuevoDispositivo);
+      setNuevoDispositivo('');
+    }
+  };
+
+  const handleChange = (event) => {
+    setNuevoDispositivo(event.target.value);
+  };
+
   return (
     <div className="dispositivos-header">
       <div className="add-device-container">
-        {/* AGREGAR LÓGICA DE AGREGAR DISPOSITIVO PARA QUE FUNCIONE */}
-        <button className="btn btn-success">Agregar dispositivo</button>
-        <input type="text" placeholder="Nuevo dispositivo" className="device-input" />
+        <button className="btn btn-success" onClick={handleAgregar}>
+          Agregar dispositivo
+        </button>
+        <input
+          type="text"
+          placeholder="Nuevo dispositivo"
+          className="device-input"
+          value={nuevoDispositivo}
+          onChange={handleChange}
+        />
       </div>
     </div>
   );
 };
 
-const Dispositivos = ({ dispositivos, modificar, eliminar }) => {
-  const handleModificar = (newName, nombre) => {
-    modificar(newName, nombre);
+const Dispositivos = ({ dispositivos, agregarDispositivo, modificar, eliminar }) => {
+  const [editingDevice, setEditingDevice] = useState(null);
+  const [nuevoDispositivo, setnuevoDispositivo] = useState('');
+
+  const handleModificar = (nombreAnterior) => {
+    if (nuevoDispositivo.trim() !== '') {
+      modificar(nuevoDispositivo, nombreAnterior);
+      setEditingDevice(null);
+      setnuevoDispositivo('');
+    }
   };
 
   const handleEliminar = (nombre) => {
@@ -36,7 +66,7 @@ const Dispositivos = ({ dispositivos, modificar, eliminar }) => {
 
   return (
     <div className="dispositivos-containeres">
-      <TituloDispositivos />
+      <TituloDispositivos agregarDispositivo={agregarDispositivo} />
       <div className="cards-containeres">
         {dispositivos.map(({ nombre, estado }) => {
           let imagen;
@@ -74,6 +104,9 @@ const Dispositivos = ({ dispositivos, modificar, eliminar }) => {
             case 'lavadora':
               imagen = lavadora;
               break;
+            case 'tesla':
+              imagen = tesla;
+              break;
             default:
               imagen = vacio;
               break;
@@ -90,22 +123,41 @@ const Dispositivos = ({ dispositivos, modificar, eliminar }) => {
                 />
               </div>
               <div className="card-body">
-                <h4 className="card-title">{nombre}</h4>
-                <h5 className="card-subtitle">Estado: {estado}</h5>
-                <div className="btn-container">
-                  <button
-                    onClick={() => handleModificar('Nuevo Nombre', nombre)}
-                    className="btn btn-warning"
-                  >
-                    Modificar
-                  </button>
-                  <button
-                    onClick={() => handleEliminar(nombre)}
-                    className="btn btn-danger"
-                  >
-                    Eliminar
-                  </button>
-                </div>
+                {editingDevice === nombre ? (
+                  <div>
+                    <input
+                      type="text"
+                      value={nuevoDispositivo}
+                      onChange={(e) => setnuevoDispositivo(e.target.value)}
+                      className="card-title-edit"
+                    />
+                    <button
+                      onClick={() => handleModificar(nombre)}
+                      className="btn btn-success"
+                    >
+                      Guardar
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <h4 className="card-title">{nombre}</h4>
+                    <h5 className="card-subtitle">Estado: {estado}</h5>
+                    <div className="btn-container">
+                      <button
+                        onClick={() => setEditingDevice(nombre)}
+                        className="btn btn-warning"
+                      >
+                        Modificar
+                      </button>
+                      <button
+                        onClick={() => handleEliminar(nombre)}
+                        className="btn btn-danger"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           );

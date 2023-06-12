@@ -81,7 +81,7 @@ const App = () => {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: `action=eliminar&nombre=${nombre}`,
+      body: `action=eliminar&name=${nombre}`,
     })
       .then(response => response.text())
       .then(data => {
@@ -92,6 +92,25 @@ const App = () => {
         console.error('Error fetching data:', error);
       });
   };
+
+  const agregarDispositivo = (nuevoNombre) => {
+    fetch('http://psp.grupito8.com/api/index.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `action=añadir&nombre=${nuevoNombre}`,
+    })
+      .then(response => response.text())
+      .then(data => {
+        console.log(data);
+        obtenerNombres();
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  };
+
 
   useEffect(() => {
     Promise.all(cards.map(card => obtenerEstado(card.nombre)))
@@ -147,7 +166,8 @@ const App = () => {
           </div>} />
           <Route path="/dispositivos" element={<div className="card-container">
             <Dispositivos 
-            dispositivos={cards} 
+            dispositivos={cards}
+            agregarDispositivo={agregarDispositivo} 
             modificar={modificar} 
             eliminar={eliminar} />
           </div>} />

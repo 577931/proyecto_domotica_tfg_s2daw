@@ -11,6 +11,7 @@ import aire_acondicionado from './images/aire_acondicionado.png';
 import horno from './images/horno.png';
 import microondas from './images/microondas.png';
 import lavadora from './images/lavadora.png';
+import tesla from './images/tesla.png';
 import vacio from './images/vacio.png';
 // Importa otras imágenes necesarias aquí
 
@@ -50,6 +51,9 @@ const Card = ({ nombre, estado, cambiarEstado }) => {
       break;
     case 'lavadora':
       imagen = lavadora;
+      break;
+    case 'tesla':
+      imagen = tesla;
       break;
     default:
       // Imagen por defecto si no se encuentra un caso coincidente
